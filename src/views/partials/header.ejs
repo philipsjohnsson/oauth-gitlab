@@ -1,0 +1,19 @@
+<% if (typeof username === 'undefined') { %> 
+    <nav>
+        <div class="nav-width">
+          <a class="nav-link" href="./">Home</a>
+          <a class="nav-link" href="./login">Login</a>
+        </div>
+    </nav>
+    <% } %>
+    
+    <% if (typeof username !== 'undefined') { %> 
+        <nav>
+            <div class="nav-width">
+              <a class="nav-link" href="./">Home</a>
+              <a class="nav-link" href="./user/logout">Logout</a>
+              <a><%= username %> </a>
+            </div>
+        </nav>
+        <% } %>
+    
