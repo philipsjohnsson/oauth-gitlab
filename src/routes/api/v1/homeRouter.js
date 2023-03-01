@@ -1,7 +1,7 @@
 /**
  * API version 1 routes.
  *
- * @author Mats Loock
+ * @author Philip Jonsson
  * @version 1.0.0
  */
 
@@ -21,6 +21,9 @@ router.get('/test', (req, res) => res.json({ message: 'Hooray! Welcome to versio
 // router.get('/', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 
 router.get('/', (req, res, next) => resolveTasksController(req).index(req, res, next))
+
+// router.get('/', (req, res, next) => resolveTasksController(req).login(req, res, next))
+
 
 // Provide req.task to the route if :id is present in the route path.
 /* router.param('id', (req, res, next, id) => resolveTasksController(req).loadTask(req, res, next, id))

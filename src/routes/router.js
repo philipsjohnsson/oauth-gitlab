@@ -14,4 +14,4 @@ export const router = express.Router()
 router.use('/', v1Router)
 
 // Catch 404 (ALWAYS keep this as the last route).
-router.use('*', (req, res, next) => next(createError(404)))
+// router.use('*', (req, res, next) => next(createError(404)))

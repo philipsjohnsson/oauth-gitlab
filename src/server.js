@@ -15,6 +15,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import createError from 'http-errors'
 import { router } from './routes/router.js'
+import session from 'express-session'
 // import { connectDB } from './config/mongoose.js'
 
 try {
@@ -46,8 +47,15 @@ try {
     res.locals.baseURL = baseURL
     next()
   })
+
   // Set up a morgan logger using the dev format for log entries.
   app.use(logger('dev'))
+
+  app.use(session({
+    secret: 'kalas',
+    resave: false,
+    saveUninitialized: true
+  }))
 
   // Register routes.
   app.use('/', router)
