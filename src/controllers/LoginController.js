@@ -43,6 +43,32 @@ export class LoginController {
 
     }
 
+    // Revoke, session.destroy
+    async logout(req, res, next) {
+      console.log(req.session?.accessToken)
+      const body = {
+        client_id: process.env.APP_ID,
+        client_secret: process.env.APP_SECRET,
+        token: req.session?.accessToken
+      }
+
+      const response = await fetch(`https://gitlab.lnu.se/oauth/revoke`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      })
+      console.log(response)
+      console.log('revoke a token')
+      
+      console.log(response.status)
+      if(response.status === 200) {
+        req.session.destroy()
+      }
+      console.log(req.session)
+    }
+
     async handleCallback(req, res, next) {
       console.log('we are inside of handleCallback')
       console.log(req.query.code)
@@ -64,11 +90,12 @@ export class LoginController {
       console.log('_________________________________________________________')
       console.log(response)
       const responseJson = await response.json()
-
       req.session.accessToken = responseJson.access_token
       console.log(req.session.accessToken)
       // res.redirect('/profile/profile')
       // res.render('profile/profile', { req })
-      res.redirect('profile/profile')
+      // res.redirect('../profile/profile')
+      res.redirect('../profile/profile')
+      // res.render('../profile/profile', { req })
     }
   }

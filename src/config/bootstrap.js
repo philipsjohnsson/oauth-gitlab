@@ -11,6 +11,7 @@ import { IoCContainer } from '../util/IoCContainer.js'
 // import { TasksService } from '../services/TasksService.js'
 import { HomeController } from '../controllers/HomeController.js'
 import { LoginController } from '../controllers/LoginController.js'
+import { ProfileController } from '../controllers/ProfileController.js'
 
 const iocContainer = new IoCContainer()
 
@@ -31,6 +32,10 @@ const iocContainer = new IoCContainer()
   ],
   singleton: true
 }) */
+
+iocContainer.register('ProfileController', ProfileController, {
+singleton: true
+})
 
 iocContainer.register('LoginController', LoginController, {
 singleton: true
