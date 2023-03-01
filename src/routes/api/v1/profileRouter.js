@@ -21,4 +21,6 @@ router.get('/test', (req, res) => res.json({ message: 'Hooray! Welcome to versio
 // router.get('/', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 // router.get('/', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 
-router.get('/profile', (req, res, next) => resolveProfileController(req).test(req, res, next))
+router.get('/profile', (req, res, next) => resolveProfileController(req).profile(req, res, next))
+router.get('/activities', (req, res, next) => resolveProfileController(req).activities(req, res, next))
+router.get('/group-projects', (req, res, next) => resolveProfileController(req).groupProjects(req, res, next))

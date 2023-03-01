@@ -15,7 +15,7 @@ export const router = express.Router()
 
 // router.get('/', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 router.use('/', homeRouter)
-router.use('/login', loginRouter)
-router.use('/profile', profileRouter)
+router.use('/auth', loginRouter)
+router.use('/user', profileRouter)
 
 router.use('*', (req, res, next) => next(createError(404)))

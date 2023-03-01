@@ -64,15 +64,18 @@ export class LoginController {
       
       console.log(response.status)
       if(response.status === 200) {
+        res.locals.loggedin === undefined
         req.session.destroy()
       }
       console.log(req.session)
+
+      res.redirect('../../')
     }
 
     async handleCallback(req, res, next) {
       console.log('we are inside of handleCallback')
       console.log(req.query.code)
-      // const parameters = `client_id=${process.env.APP_ID}&client_secret=${process.env.APP_SECRET}&code=${req.query.code}&grant_type=authorization_code&redirect_uri=${process.env.REDIRECT_URI}`
+
       const body = {
         client_id: process.env.APP_ID,
         client_secret: process.env.APP_SECRET,
@@ -91,11 +94,12 @@ export class LoginController {
       console.log(response)
       const responseJson = await response.json()
       req.session.accessToken = responseJson.access_token
+      req.session.loggedin = true
       console.log(req.session.accessToken)
       // res.redirect('/profile/profile')
       // res.render('profile/profile', { req })
       // res.redirect('../profile/profile')
-      res.redirect('../profile/profile')
+      res.redirect('../user/profile')
       // res.render('../profile/profile', { req })
     }
   }

@@ -43,11 +43,6 @@ try {
   app.use(expressLayouts)
   app.set('layout', join(directoryFullName, 'views', 'layouts', 'default'))
 
-  app.use((req, res, next) => {
-    res.locals.baseURL = baseURL
-    next()
-  })
-
   // Set up a morgan logger using the dev format for log entries.
   app.use(logger('dev'))
 
@@ -63,6 +58,17 @@ try {
   }
 
   app.use(session(sessionOptions))
+
+
+  app.use((req, res, next) => {
+    if(req.session.loggedin) {
+      res.locals.loggedin = req.session.loggedin
+    }
+
+    res.locals.baseURL = baseURL
+
+    next()
+  })
 
   // Register routes.
   app.use('/', router)

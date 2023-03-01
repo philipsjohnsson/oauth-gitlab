@@ -21,6 +21,6 @@ router.get('/test', (req, res) => res.json({ message: 'Hooray! Welcome to versio
 // router.get('/', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 // router.get('/', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 
-router.get('/', (req, res, next) => resolveLoginController(req).login(req, res, next))
+router.get('/login', (req, res, next) => resolveLoginController(req).login(req, res, next))
 router.get('/logout', (req, res, next) => resolveLoginController(req).logout(req, res, next))
 router.get('/callback', (req, res, next) => resolveLoginController(req).handleCallback(req, res, next))

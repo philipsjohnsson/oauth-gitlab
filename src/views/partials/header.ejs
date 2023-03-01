@@ -1,20 +1,21 @@
-<% if (typeof username === 'undefined') { %> 
+<% if (typeof loggedin === 'undefined') { %> 
     <nav>
         <div class="nav-width">
           <a class="nav-link" href="./">Home</a>
-          <a class="nav-link" href="./login">Login</a>
-          <a class="nav-link" href="./login/logout">Logout</a>
+          <a class="nav-link" href="./auth/login">Login with Gitlab</a>
         </div>
     </nav>
     <% } %>
-    
-    <% if (typeof username !== 'undefined') { %> 
-        <nav>
-            <div class="nav-width">
-              <a class="nav-link" href="./">Home</a>
-              <a class="nav-link" href="./user/logout">Logout</a>
-              <a><%= username %> </a>
-            </div>
-        </nav>
-        <% } %>
+
+    <% if (typeof loggedin === 'boolean') { %> 
+      <nav>
+          <div class="nav-width">
+            <a class="nav-link" href="./">Home</a>
+            <a class="nav-link" href="./user/profile">Profile</a>
+            <a class="nav-link" href="./user/activities">Activities</a>
+            <a class="nav-link" href="./user/group-projects">Group Projects</a>
+            <a class="nav-link" href="./auth/logout">Logout</a>
+          </div>
+      </nav>
+      <% } %>
     
