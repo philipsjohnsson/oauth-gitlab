@@ -9,6 +9,8 @@
 // import { TasksService } from '../services/TasksService.js'
 import fetch from 'node-fetch'
 import { AuthService } from '../services/AuthService.js'
+import { nanoid } from 'nanoid'
+import jwt from 'jsonwebtoken'
 
 /**
  * Encapsulates a controller.
@@ -29,12 +31,14 @@ export class AuthController {
     async login(req, res, next) {
       console.log(this.#service)
       console.log('we are inside of login')
+      const state = nanoid()
+      console.log(state)
       // const response = await fetch(`https://gitlab.lnu.se/oauth/authorize?client_id=${process.env.APP_ID}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code`)
 /*       console.log(response)
       console.log('.............')
       console.log(response.code) */
-      console.log(process.env.REDIRECT_URI)
-      res.redirect(`https://gitlab.lnu.se/oauth/authorize?client_id=${process.env.APP_ID}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code`)
+      console.log(process.env.REQUESTED_SCOPE)
+      res.redirect(`https://gitlab.lnu.se/oauth/authorize?client_id=${process.env.APP_ID}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code&state=${state}&scope=${process.env.REQUESTED_SCOPE}`)
 
       /* const parameters = `client_id=${process.env.APP_ID}&code=${}&grant_type=authorization_code&redirect_uri=${process.env.REDIRECT_URI}`
       const responseToken = await fetch(`https://gitlab.lnu.se/oauth/token`, {
@@ -95,12 +99,23 @@ export class AuthController {
         body: JSON.stringify(body)
       })
       console.log('_________________________________________________________')
-      console.log(response)
+      // console.log(response)
       const responseJson = await response.json()
+      console.log('HEJJJJJJJJJJJJJJJJJJJJJ____')
+
       console.log(responseJson)
+
+      
+      // const jwt_parts = responseJson.id_token.split('.')
+      const payload = jwt.decode(responseJson.id_token, process.env.APP_SECRET)
+
+      console.log('payload:')
+      console.log(payload)
+
+      req.session.jwtToken = responseJson.id_token
       req.session.accessToken = responseJson.access_token
       req.session.loggedin = true
-      console.log(req.session.accessToken)
+      // console.log(req.session.accessToken)
       // res.redirect('/profile/profile')
       // res.render('profile/profile', { req })
       // res.redirect('../profile/profile')

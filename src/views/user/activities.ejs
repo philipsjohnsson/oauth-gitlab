@@ -1,1 +1,20 @@
-<div>Acitivies</div>
+<div>
+  <h1>Acitivies</h1>
+  <table>
+    <tr>
+      <th>Action Name</th>
+      <th>Created At</th>
+      <th>Target Title</th>
+      <th>Target Type</th>
+    </tr>
+    <% viewData.flat().forEach(element => { %>
+    <tr>
+      <td><%= element.action_name %></td>
+      <td><%= element.created_at.substring(0, 19).replace('T', ' ') %></td>
+      <td><%= element.target_title %></td>
+      <td><%= element.target_type %></td>
+    </tr>
+    <% }) %>
+  </table>
+  <%= console.log(viewData) %>
+</div>

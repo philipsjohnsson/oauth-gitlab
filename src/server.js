@@ -27,6 +27,17 @@ try {
 
   // Set various HTTP headers to make the application little more secure (https://www.npmjs.com/package/helmet).
   app.use(helmet())
+  // Adds XSS security to the application.
+  app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        'script-src': ["'self'"],
+        'img-src': ['gitlab.lnu.se', '*.gravatar.com']
+      }
+    })
+  )
+
 
   const directoryFullName = dirname(fileURLToPath(import.meta.url))
   app.use(express.urlencoded({ extended: false }))

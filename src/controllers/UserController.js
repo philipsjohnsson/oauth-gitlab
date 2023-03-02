@@ -13,11 +13,13 @@ export class UserController {
     this.#service = service
   }
 
-  profile(req, res, next) {
+  async profile(req, res, next) {
     console.log('tEsT')
     console.log(req.session.accessToken)
-    this.#service.profile(req, res, next)
-    res.render('user/profile', { req })
+    console.log(req.session.jwtToken)
+
+    const viewData = await this.#service.profile(req, res, next)
+    res.render('user/profile', { viewData })
   }
 
   groupProjects(req, res, next) {
@@ -26,9 +28,13 @@ export class UserController {
     res.render('user/group-projects')
   }
 
-  activities(req, res, next) {
+  async activities(req, res, next) {
     console.log('we are getting inside of activities')
 
-    res.render('user/activities')
+
+    const viewData = await this.#service.activities(req, res, next)
+    // console.log(viewData)
+
+    res.render('user/activities', { viewData })
   }
 }
