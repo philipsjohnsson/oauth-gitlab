@@ -15,12 +15,12 @@ export const router = express.Router()
  * @param {object} req - Express request object.
  * @returns {object} An object that can act as a TasksController object.
  */
-const resolveProfileController = (req) => req.app.get('container').resolve('ProfileController') // req.app --> instance of the express application
+const resolveAuthController = (req) => req.app.get('container').resolve('AuthController') // req.app --> instance of the express application
 
 router.get('/test', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 // router.get('/', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 // router.get('/', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 
-router.get('/profile', (req, res, next) => resolveProfileController(req).profile(req, res, next))
-router.get('/activities', (req, res, next) => resolveProfileController(req).activities(req, res, next))
-router.get('/group-projects', (req, res, next) => resolveProfileController(req).groupProjects(req, res, next))
+router.get('/login', (req, res, next) => resolveAuthController(req).login(req, res, next))
+router.get('/logout', (req, res, next) => resolveAuthController(req).logout(req, res, next))
+router.get('/callback', (req, res, next) => resolveAuthController(req).handleCallback(req, res, next))

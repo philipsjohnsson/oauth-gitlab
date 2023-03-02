@@ -15,12 +15,12 @@ export const router = express.Router()
  * @param {object} req - Express request object.
  * @returns {object} An object that can act as a TasksController object.
  */
-const resolveLoginController = (req) => req.app.get('container').resolve('LoginController') // req.app --> instance of the express application
+const resolveUserController = (req) => req.app.get('container').resolve('UserController') // req.app --> instance of the express application
 
 router.get('/test', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 // router.get('/', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 // router.get('/', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 
-router.get('/login', (req, res, next) => resolveLoginController(req).login(req, res, next))
-router.get('/logout', (req, res, next) => resolveLoginController(req).logout(req, res, next))
-router.get('/callback', (req, res, next) => resolveLoginController(req).handleCallback(req, res, next))
+router.get('/profile', (req, res, next) => resolveUserController(req).profile(req, res, next))
+router.get('/activities', (req, res, next) => resolveUserController(req).activities(req, res, next))
+router.get('/group-projects', (req, res, next) => resolveUserController(req).groupProjects(req, res, next))

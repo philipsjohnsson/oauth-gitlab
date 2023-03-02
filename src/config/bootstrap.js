@@ -9,9 +9,12 @@ import { IoCContainer } from '../util/IoCContainer.js'
 // import { TaskModel } from '../models/TaskModel.js'
 // import { TaskRepository } from '../repositories/TaskRepository.js'
 // import { TasksService } from '../services/TasksService.js'
+import { AuthService } from '../services/AuthService.js'
+import { UserService } from '../services/UserService.js'
 import { HomeController } from '../controllers/HomeController.js'
-import { LoginController } from '../controllers/LoginController.js'
-import { ProfileController } from '../controllers/ProfileController.js'
+import { AuthController } from '../controllers/AuthController.js'
+import { UserController } from '../controllers/UserController.js'
+
 
 const iocContainer = new IoCContainer()
 
@@ -33,12 +36,26 @@ const iocContainer = new IoCContainer()
   singleton: true
 }) */
 
-iocContainer.register('ProfileController', ProfileController, {
-singleton: true
+iocContainer.register('UserService', UserService, {
+  singleton: true
 })
 
-iocContainer.register('LoginController', LoginController, {
-singleton: true
+iocContainer.register('AuthService', AuthService, {
+  singleton: true
+})
+
+iocContainer.register('UserController', UserController, {
+  dependencies: [
+    'UserService'
+  ],
+  singleton: true
+})
+
+iocContainer.register('AuthController', AuthController, {
+  dependencies: [
+    'AuthService'
+  ],
+  singleton: true
 })
 
 iocContainer.register('HomeController', HomeController, {

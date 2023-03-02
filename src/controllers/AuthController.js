@@ -8,11 +8,18 @@
 // import createError from 'http-errors'
 // import { TasksService } from '../services/TasksService.js'
 import fetch from 'node-fetch'
+import { AuthService } from '../services/AuthService.js'
 
 /**
  * Encapsulates a controller.
  */
-export class LoginController {
+export class AuthController {
+
+  #service
+
+  constructor(service = new AuthService()) {
+    this.#service = service
+  }
 
     async consoletest(req, res, next) {
       console.log('we are inside of consoletest in controller')
@@ -20,6 +27,7 @@ export class LoginController {
     
     // https://gitlab.example.com/oauth/authorize?client_id=APP_ID&redirect_uri=REDIRECT_URI&response_type=code&state=STATE&scope=REQUESTED_SCOPES&code_challenge=CODE_CHALLENGE&code_challenge_method=S256
     async login(req, res, next) {
+      console.log(this.#service)
       console.log('we are inside of login')
       // const response = await fetch(`https://gitlab.lnu.se/oauth/authorize?client_id=${process.env.APP_ID}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code`)
 /*       console.log(response)
@@ -46,24 +54,20 @@ export class LoginController {
     // Revoke, session.destroy
     async logout(req, res, next) {
       console.log(req.session?.accessToken)
-      const body = {
-        client_id: process.env.APP_ID,
-        client_secret: process.env.APP_SECRET,
-        token: req.session?.accessToken
-      }
+      const loggedOut = this.#service.logout(req, res, next)
 
-      const response = await fetch(`https://gitlab.lnu.se/oauth/revoke`, {
+      /* const response = await fetch(`https://gitlab.lnu.se/oauth/revoke`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-      })
-      console.log(response)
-      console.log('revoke a token')
+      }) */
+      // console.log(response)
+      // console.log('revoke a token')
       
-      console.log(response.status)
-      if(response.status === 200) {
+      // console.log(response.status)
+      if(loggedOut) {
         res.locals.loggedin === undefined
         req.session.destroy()
       }
@@ -93,6 +97,7 @@ export class LoginController {
       console.log('_________________________________________________________')
       console.log(response)
       const responseJson = await response.json()
+      console.log(responseJson)
       req.session.accessToken = responseJson.access_token
       req.session.loggedin = true
       console.log(req.session.accessToken)
