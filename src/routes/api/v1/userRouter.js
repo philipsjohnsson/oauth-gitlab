@@ -6,8 +6,35 @@
  */
 
 import express from 'express'
+import createError from 'http-errors'
 
 export const router = express.Router()
+
+const authenticateJwt = (req, res, next) => {
+  console.log('Authenticate jwt')
+  next()
+}
+
+const checkAccessToken = (req, res, next) => {
+  checkIfAccessTokenExist(req, res, next)
+  authenticateJwt(req, res, next)
+}
+
+const checkIfAccessTokenExist = (req, res, next) => {
+  try {
+  
+    console.log('checkIfAccessTokenExist')
+    const accessToken = req.session.accessToken
+    console.log(accessToken)
+    if(!accessToken) {
+      console.log('TEST we are inside of error 404')
+      next(createError(404))
+    }
+    next()
+  } catch (error) {
+    next(createError(401))
+  }
+}
 
 /**
  * Resolves a TasksController object from the IoC container.
@@ -18,8 +45,8 @@ export const router = express.Router()
 const resolveUserController = (req) => req.app.get('container').resolve('UserController') // req.app --> instance of the express application
 
 router.get('/test', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
-// router.get('/', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
-// router.get('/', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
+router.all('*', checkIfAccessTokenExist)
+router.all('*', authenticateJwt)
 
 router.get('/profile', (req, res, next) => resolveUserController(req).profile(req, res, next))
 router.get('/activities', (req, res, next) => resolveUserController(req).activities(req, res, next))

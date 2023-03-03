@@ -86,7 +86,17 @@ try {
 
   // Error handler.
   app.use(function (err, req, res, next) {
-    if (!err.status) {
+
+    console.log(`${directoryFullName}/views/errors/404.html`)
+
+    if (err.status === 404) {
+      console.log('we are inside of error')
+      return res
+      .status(404)
+      .sendFile(`${directoryFullName}/views/errors/404.html`)
+    }
+
+    if (err.status === 500) {
       const cause = err
       err = createError(500)
       err.cause = cause

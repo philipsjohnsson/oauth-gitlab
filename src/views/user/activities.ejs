@@ -7,10 +7,10 @@
       <th>Target Title</th>
       <th>Target Type</th>
     </tr>
-    <% viewData.flat().forEach(element => { %>
+    <% viewData.forEach(element => { %>
     <tr>
       <td><%= element.action_name %></td>
-      <td><%= element.created_at.substring(0, 19).replace('T', ' ') %></td>
+      <td><%= element.created_at %></td>
       <td><%= element.target_title %></td>
       <td><%= element.target_type %></td>
     </tr>

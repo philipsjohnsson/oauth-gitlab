@@ -13,6 +13,10 @@ export class UserController {
     this.#service = service
   }
 
+  authenticateJwt() {
+    console.log('authenticate jwt')
+  }
+
   async profile(req, res, next) {
     console.log('tEsT')
     console.log(req.session.accessToken)
@@ -24,6 +28,8 @@ export class UserController {
 
   groupProjects(req, res, next) {
     console.log('we are getting inside of group-projects')
+
+    this.#service.groupProjects(req, res, next)
 
     res.render('user/group-projects')
   }
