@@ -86,6 +86,7 @@ try {
 
   // Error handler.
   app.use(function (err, req, res, next) {
+    console.log(err)
 
     console.log(`${directoryFullName}/views/errors/404.html`)
 
@@ -93,7 +94,7 @@ try {
       console.log('we are inside of error')
       return res
       .status(404)
-      .sendFile(`${directoryFullName}/views/errors/404.html`)
+      .render('errors/404')
     }
 
     if (err.status === 500) {

@@ -15,24 +15,25 @@ const authenticateJwt = (req, res, next) => {
   next()
 }
 
-const checkAccessToken = (req, res, next) => {
-  checkIfAccessTokenExist(req, res, next)
-  authenticateJwt(req, res, next)
-}
-
 const checkIfAccessTokenExist = (req, res, next) => {
   try {
-  
+    console.log('check if access token exist inside of usercontroller')
+
     console.log('checkIfAccessTokenExist')
+    console.log('------------')
     const accessToken = req.session.accessToken
     console.log(accessToken)
+    console.log('------------')
     if(!accessToken) {
       console.log('TEST we are inside of error 404')
-      next(createError(404))
+      throw new Error('Not Found!')
+      // res.render('errors/404')
+      // next(createError(404))
+    } else {
+      next()
     }
-    next()
   } catch (error) {
-    next(createError(401))
+    next(createError(404))
   }
 }
 
@@ -46,7 +47,7 @@ const resolveUserController = (req) => req.app.get('container').resolve('UserCon
 
 router.get('/test', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 router.all('*', checkIfAccessTokenExist)
-router.all('*', authenticateJwt)
+// router.all('*', authenticateJwt)
 
 router.get('/profile', (req, res, next) => resolveUserController(req).profile(req, res, next))
 router.get('/activities', (req, res, next) => resolveUserController(req).activities(req, res, next))
