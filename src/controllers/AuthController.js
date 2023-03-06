@@ -33,11 +33,8 @@ export class AuthController {
    * @param {Function} next - Express next middleware function.
    */
   async login (req, res, next) {
-    console.log(this.#service)
-    console.log('we are inside of login')
     const state = nanoid()
-    console.log(state)
-    console.log(process.env.REQUESTED_SCOPE)
+
     res.redirect(`https://gitlab.lnu.se/oauth/authorize?client_id=${process.env.APP_ID}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code&state=${state}&scope=${process.env.REQUESTED_SCOPE}`)
   }
 
@@ -57,7 +54,6 @@ export class AuthController {
       res.locals.loggedin = undefined
       req.session.destroy()
     }
-    console.log(req.session)
 
     res.redirect('../../')
   }
@@ -70,9 +66,6 @@ export class AuthController {
    * @param {Function} next - Express next middleware function.
    */
   async handleCallback (req, res, next) {
-    console.log('we are inside of handleCallback')
-    console.log(req.query.code)
-
     const body = {
       client_id: process.env.APP_ID,
       client_secret: process.env.APP_SECRET,
@@ -87,10 +80,7 @@ export class AuthController {
       },
       body: JSON.stringify(body)
     })
-    console.log('_________________________________________________________')
-    console.log(response)
     const responseJson = await response.json()
-    console.log(responseJson)
 
     const payload = jwt.decode(responseJson.id_token, process.env.APP_SECRET)
 

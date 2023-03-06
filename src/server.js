@@ -85,12 +85,7 @@ try {
 
   // Error handler.
   app.use(function (err, req, res, next) {
-    console.log(err)
-
-    console.log(`${directoryFullName}/views/errors/404.html`)
-
     if (err.status === 404) {
-      console.log('we are inside of error')
       return res
         .status(404)
         .render('errors/404')

@@ -23,9 +23,6 @@ export class UserService {
    * @param {Function} next - Express next middleware function.
    */
   async profile (req, res, next) {
-    console.log('we are inside of profile in UserService')
-    console.log(req.session.accessToken)
-
     const payloadJwt = this.#jwtHandler.decodeJwt(req, res, next)
     console.log(payloadJwt)
 
@@ -47,7 +44,6 @@ export class UserService {
    * @param {Function} next - Express next middleware function.
    */
   async activities (req, res, next) {
-    console.log('activities')
     const arrPages = []
 
     for (let i = 1; i <= 2; i++) {
@@ -72,11 +68,6 @@ export class UserService {
    * @param {Function} next - Express next middleware function.
    */
   async groupProjects (req, res, next) {
-    /* projects.forEach(async (element) => {
-      console.log(element.full_path)
-      // console.log(await this.#fetchGet(`https://gitlab.lnu.se/api/v4/groups/${element.full_path}/projects`, req))
-    }) */
-    // console.log(projects)
     return await this.#graphQL('https://gitlab.lnu.se/api/graphql', req)
   }
 
@@ -105,9 +96,7 @@ export class UserService {
    * @param {string} URL - url to fetch.
    * @param {object} req - Express request object.
    */
-  async #graphQL (URL, req) { // Dubbelkolla så att projekten har visible true eller nått i den stilen.
-    console.log(req.session.accessToken)
-
+  async #graphQL (URL, req) {
     const query = `query {
       currentUser {
         groups(first: 4) {

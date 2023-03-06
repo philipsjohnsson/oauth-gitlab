@@ -35,8 +35,6 @@ export class UserController {
    * @param {Function} next - Express next middleware function.
    */
   async groupProjects (req, res, next) {
-    console.log('we are getting inside of group-projects')
-
     const viewData = await this.#service.groupProjects(req, res, next)
 
     res.render('user/group-projects', { viewData })
@@ -50,8 +48,6 @@ export class UserController {
    * @param {Function} next - Express next middleware function.
    */
   async activities (req, res, next) {
-    console.log('we are getting inside of activities')
-
     const viewData = await this.#service.activities(req, res, next)
 
     res.render('user/activities', { viewData })

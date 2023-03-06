@@ -34,7 +34,6 @@ const checkIfAccessTokenExist = (req, res, next) => {
     const accessToken = req.session.accessToken
 
     if (!accessToken) {
-      console.log('TEST we are inside of error 404')
       throw new Error('Not Found!')
     } else {
       next()

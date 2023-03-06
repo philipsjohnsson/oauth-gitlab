@@ -17,9 +17,6 @@
       </tr>
     <% group.projects.nodes.forEach((project, index) => { %>
       <% if(index <= 4) { %>
-        <% console.log(project) %>
-        <% console.log(project.avatarUrl) %>
-        <% console.log(project.repository.tree.lastCommit.author.avatarUrl) %>
         <img src="<%= project.avatarUrl %>" width="20px">
           <tr>
             <td><div><div><a href="https://gitlab.lnu.se/<%= project.fullPath %>"><img src="<%= project.avatarUrl %>" width="20px"><%= project.name %></a></div></td>
