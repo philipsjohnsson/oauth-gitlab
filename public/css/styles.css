@@ -1,3 +1,12 @@
 .test {
     background-color: red
 }
+
+.center {
+    display: flex;
+}
+
+.commit-names {
+    display: flex;
+    flex-direction: column;
+}

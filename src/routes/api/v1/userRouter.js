@@ -10,25 +10,32 @@ import createError from 'http-errors'
 
 export const router = express.Router()
 
+/**
+ * Autenticate JWT.
+ *
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ */
 const authenticateJwt = (req, res, next) => {
   console.log('Authenticate jwt')
   next()
 }
 
+/**
+ * Checks if the access token exists.
+ *
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ */
 const checkIfAccessTokenExist = (req, res, next) => {
   try {
-    console.log('check if access token exist inside of usercontroller')
-
-    console.log('checkIfAccessTokenExist')
-    console.log('------------')
     const accessToken = req.session.accessToken
-    console.log(accessToken)
-    console.log('------------')
-    if(!accessToken) {
+
+    if (!accessToken) {
       console.log('TEST we are inside of error 404')
       throw new Error('Not Found!')
-      // res.render('errors/404')
-      // next(createError(404))
     } else {
       next()
     }

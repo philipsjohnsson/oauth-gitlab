@@ -24,7 +24,6 @@ router.get('/', (req, res, next) => resolveTasksController(req).index(req, res, 
 
 // router.get('/', (req, res, next) => resolveTasksController(req).login(req, res, next))
 
-
 // Provide req.task to the route if :id is present in the route path.
 /* router.param('id', (req, res, next, id) => resolveTasksController(req).loadTask(req, res, next, id))
 

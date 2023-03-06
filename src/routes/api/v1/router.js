@@ -1,7 +1,7 @@
 /**
  * API version 1 routes.
  *
- * @author Mats Loock
+ * @author Philip Jonsson
  * @version 1.0.0
  */
 

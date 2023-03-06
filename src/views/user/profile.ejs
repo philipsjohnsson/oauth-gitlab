@@ -1,4 +1,5 @@
 <div>
+    <% console.log(viewData.avatar_url) %>
     <h1>Gitlab ID</h1>
     <div><%= viewData.id %></div>
     <h1>Email</h1>
@@ -7,7 +8,7 @@
     <div><%= viewData.name %></div>
     <h1>Username</h1>
     <div><%= viewData.username %></div>
-    <img src="<%= viewData.avatar_url %>" alt="Avatar" crossorigin="true">
+    <img src="<%= viewData.avatar_url %>" alt="Avatar">
     <h1>Last Activity</h1>
     <div><%= viewData.last_activity_on %></div>
 </div>

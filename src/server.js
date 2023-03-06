@@ -33,11 +33,11 @@ try {
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
         'script-src': ["'self'"],
-        'img-src': ['gitlab.lnu.se', '*.gravatar.com']
-      }
+        'img-src': ["'self", 'gitlab.lnu.se', 'secure.gravatar.com']
+      },
+      crossOriginEmbedderPolicy: false
     })
   )
-
 
   const directoryFullName = dirname(fileURLToPath(import.meta.url))
   app.use(express.urlencoded({ extended: false }))
@@ -70,9 +70,8 @@ try {
 
   app.use(session(sessionOptions))
 
-
   app.use((req, res, next) => {
-    if(req.session.loggedin) {
+    if (req.session.loggedin) {
       res.locals.loggedin = req.session.loggedin
     }
 
@@ -93,8 +92,8 @@ try {
     if (err.status === 404) {
       console.log('we are inside of error')
       return res
-      .status(404)
-      .render('errors/404')
+        .status(404)
+        .render('errors/404')
     }
 
     if (err.status === 500) {

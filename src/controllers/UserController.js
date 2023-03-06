@@ -1,45 +1,58 @@
-import fetch from 'node-fetch'
 import { UserService } from '../services/UserService.js'
 
 /**
  * Encapsulates a controller.
  */
 export class UserController {
-
-
   #service
 
-  constructor(service = new UserService()) {
+  /**
+   * Constructor of the UserController.
+   *
+   * @param {object} service - UserService.
+   */
+  constructor (service = new UserService()) {
     this.#service = service
   }
 
-  authenticateJwt() {
-    console.log('authenticate jwt')
-  }
-
-  async profile(req, res, next) {
-    console.log('tEsT')
-    console.log(req.session.accessToken)
-    console.log(req.session.jwtToken)
-
+  /**
+   * Renders the profile.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  async profile (req, res, next) {
     const viewData = await this.#service.profile(req, res, next)
     res.render('user/profile', { viewData })
   }
 
-  groupProjects(req, res, next) {
+  /**
+   * Renders the group projects.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  async groupProjects (req, res, next) {
     console.log('we are getting inside of group-projects')
 
-    this.#service.groupProjects(req, res, next)
+    const viewData = await this.#service.groupProjects(req, res, next)
 
-    res.render('user/group-projects')
+    res.render('user/group-projects', { viewData })
   }
 
-  async activities(req, res, next) {
+  /**
+   * Renders the activities.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  async activities (req, res, next) {
     console.log('we are getting inside of activities')
 
-
     const viewData = await this.#service.activities(req, res, next)
-    // console.log(viewData)
 
     res.render('user/activities', { viewData })
   }
