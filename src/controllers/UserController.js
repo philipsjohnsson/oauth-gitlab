@@ -24,6 +24,7 @@ export class UserController {
    */
   async profile (req, res, next) {
     const viewData = await this.#service.profile(req, res, next)
+
     res.render('user/profile', { viewData })
   }
 

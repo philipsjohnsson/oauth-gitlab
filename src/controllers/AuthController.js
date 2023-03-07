@@ -82,6 +82,8 @@ export class AuthController {
     })
     const responseJson = await response.json()
 
+    console.log(responseJson)
+
     const payload = jwt.decode(responseJson.id_token, process.env.APP_SECRET)
 
     console.log('payload:')
@@ -90,6 +92,9 @@ export class AuthController {
     req.session.jwtToken = responseJson.id_token
     req.session.accessToken = responseJson.access_token
     req.session.loggedin = true
+    req.session.tokenExpires = responseJson.expires_in
+    req.session.tokenCreatedAt = responseJson.created_at
+    req.session.refreshToken = responseJson.refresh_token
     res.redirect('../user/profile')
   }
 }

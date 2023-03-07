@@ -91,6 +91,12 @@ try {
         .render('errors/404')
     }
 
+    if (err.status === 403) {
+      return res
+        .status(403)
+        .render('errors/403')
+    }
+
     if (err.status === 500) {
       const cause = err
       err = createError(500)

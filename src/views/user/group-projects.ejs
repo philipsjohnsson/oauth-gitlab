@@ -1,47 +1,65 @@
 <div>
-  Groups with projects
 
-  <% viewData.currentUser.groups.nodes.forEach((group, index) => { %>
-    <% if(index < 3) { %>
-      <% if(group.avatarUrl !== null) { %>
-        <h4><img src="<%= group.avatarUrl %>" width="20px"><%= group.name %></h4>
-      <% } else { %>
-        <h4><a href="https://gitlab.lnu.se/<%= group.fullPath %>"><%= group.name %></a></h4>
-      <% } %>
-    <table>
-      <tr>
-        <th>Project</th>
-        <th>Last commit</th>
-        <th>user</th>
-        <th>username</th>
-      </tr>
-    <% group.projects.nodes.forEach((project, index) => { %>
-      <% if(index <= 4) { %>
-        <img src="<%= project.avatarUrl %>" width="20px">
-          <tr>
-            <td><div><div><a href="https://gitlab.lnu.se/<%= project.fullPath %>"><img src="<%= project.avatarUrl %>" width="20px"><%= project.name %></a></div></td>
-            <td><%= project.repository.tree.lastCommit.authoredDate.substring(0, 10) %></td>
-            <td><div class="center">
-              <img src="<%= project.repository.tree.lastCommit.author.avatarUrl %>" width="20px"> <div class="commit-names">
-              <%= project.repository.tree.lastCommit.author.username %>
-            </div></div></td>
-            <td><%= project.repository.tree.lastCommit.author.name %></td>
-          </tr>
-          <% } %>
-          <% if(index > 4) { %>
-            <tr>
-              <td><button class="btn" disabled>Visa fler projects</button></td>
-            </tr>
-          <% } %>
-          <% }) %>
-        </table>
-        <% if(index > 4) { %>
-          <button>More projects</button>
-          <% } %>
-        <% } %>
-        <% if(index > 2) { %>
-          <button class="btn" disabled>Visa fler groups</button>
-          <% } %>
-  <% }) %>
+  <div class="center-body">
+    <h1>Groups with projects</h1>
+
+    <% viewData.currentUser.groups.nodes.forEach((group, index)=> { %>
+      <% if(index < 3) { %>
+        <% if(group.avatarUrl !==null) { %>
+          <div><img src="<%= group.avatarUrl %>" width="20px">
+            <%= group.name %>
+          </div>
+          <% } else { %>
+            <div><a href="https://gitlab.lnu.se/<%= group.fullPath %>">
+                <%= group.name %>
+              </a></div>
+            <% } %>
+              <table class="table">
+                <tr>
+                  <th>Project</th>
+                  <th>Last commit</th>
+                  <th>user</th>
+                  <th>username</th>
+                </tr>
+                <% group.projects.nodes.forEach((project, index)=> { %>
+                  <% if(index <=4) { %>
+                    <tr>
+                      <td>
+                        <div>
+                          <div><a href="https://gitlab.lnu.se/<%= project.fullPath %>">
+                              <%= project.name %>
+                            </a></div>
+                      </td>
+                      <td>
+                        <%= project.repository.tree.lastCommit.authoredDate.substring(0, 10) %>
+                      </td>
+                      <td>
+                        <div class="center">
+                          <img src="<%= project.repository.tree.lastCommit.author.avatarUrl %>" width="20px">
+                          <div class="commit-names">
+                            <%= project.repository.tree.lastCommit.author.username %>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <%= project.repository.tree.lastCommit.author.name %>
+                      </td>
+                    </tr>
+                    <% } %>
+                      <% if(index> 4) { %>
+                        <tr>
+                          <td><button class="btn" disabled>Visa fler projects</button></td>
+                        </tr>
+                        <% } %>
+                          <% }) %>
+              </table>
+              <% if(index> 4) { %>
+                <button>More projects</button>
+                <% } %>
+                  <% } %>
+                    <% if(index> 2) { %>
+                      <button class="btn" disabled>Visa fler groups</button>
+                      <% } %>
+                        <% }) %>
+  </div>
 </div>
-

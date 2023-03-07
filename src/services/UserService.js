@@ -26,14 +26,7 @@ export class UserService {
     const payloadJwt = this.#jwtHandler.decodeJwt(req, res, next)
     console.log(payloadJwt)
 
-    /* const userData = {
-      email: payloadJwt.email
-    } */
-
-    // this.#fetchGet(`https://gitlab.lnu.se/api/v4/projects?access_token=${req.session.accessToken}`)
     return this.#fetchGet('https://gitlab.lnu.se/api/v4/user', req)
-
-    // this.#fetchGet(`https://gitlab.lnu.se/api/v4/users/avatar`)
   }
 
   /**
@@ -57,9 +50,6 @@ export class UserService {
     return arrPages
   }
 
-  // GET /groups/:id/subgroups
-  // GET /groups/:id/projects
-  // https://gitlab.com/-/graphql-explorer?_gl=1*4y40fq*_ga*MzEyNjI1MDQ5LjE2Nzc0NDU0Mjk.*_ga_ENFH3X7M5Y*MTY3NzgzMjMyOC4yMi4xLjE2Nzc4MzI0NTQuMC4wLjA.
   /**
    * Fetches the data for the groups and projects.
    *
