@@ -6,8 +6,31 @@
  */
 
 import express from 'express'
+import createError from 'http-errors'
 
 export const router = express.Router()
+
+/**
+ * Checks if the access token exists.
+ *
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ */
+const checkIfAccessTokenExist = (req, res, next) => {
+  try {
+    const accessToken = req.session.accessToken
+    console.log('We are inside of check access token')
+
+    if (!accessToken) {
+      throw new Error('Not Found!')
+    } else {
+      next()
+    }
+  } catch (error) {
+    next(createError(404))
+  }
+}
 
 /**
  * Resolves a TasksController object from the IoC container.
@@ -17,10 +40,8 @@ export const router = express.Router()
  */
 const resolveAuthController = (req) => req.app.get('container').resolve('AuthController') // req.app --> instance of the express application
 
-router.get('/test', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
-// router.get('/', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
-// router.get('/', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
-
 router.get('/login', (req, res, next) => resolveAuthController(req).login(req, res, next))
-router.get('/logout', (req, res, next) => resolveAuthController(req).logout(req, res, next))
 router.get('/callback', (req, res, next) => resolveAuthController(req).handleCallback(req, res, next))
+
+router.all('*', checkIfAccessTokenExist)
+router.get('/logout', (req, res, next) => resolveAuthController(req).logout(req, res, next))

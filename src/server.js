@@ -13,7 +13,6 @@ import helmet from 'helmet'
 import logger from 'morgan'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import createError from 'http-errors'
 import { router } from './routes/router.js'
 import session from 'express-session'
 // import { connectDB } from './config/mongoose.js'
@@ -98,9 +97,9 @@ try {
     }
 
     if (err.status === 500) {
-      const cause = err
-      err = createError(500)
-      err.cause = cause
+      return res
+        .status(500)
+        .render('errors/500')
     }
 
     if (req.app.get('env') !== 'development') {

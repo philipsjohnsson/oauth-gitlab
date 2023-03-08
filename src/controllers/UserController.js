@@ -1,3 +1,4 @@
+import createHttpError from 'http-errors'
 import { UserService } from '../services/UserService.js'
 
 /**
@@ -23,9 +24,14 @@ export class UserController {
    * @param {Function} next - Express next middleware function.
    */
   async profile (req, res, next) {
-    const viewData = await this.#service.profile(req, res, next)
+    try {
+      const viewData = await this.#service.profile(req, res, next)
 
-    res.render('user/profile', { viewData })
+      res.render('user/profile', { viewData })
+    } catch (err) {
+      err.status = 500
+      next(createHttpError(500))
+    }
   }
 
   /**
@@ -36,9 +42,14 @@ export class UserController {
    * @param {Function} next - Express next middleware function.
    */
   async groupProjects (req, res, next) {
-    const viewData = await this.#service.groupProjects(req, res, next)
+    try {
+      const viewData = await this.#service.groupProjects(req, res, next)
 
-    res.render('user/group-projects', { viewData })
+      res.render('user/group-projects', { viewData })
+    } catch (err) {
+      err.status = 500
+      next(createHttpError(500))
+    }
   }
 
   /**
@@ -49,8 +60,13 @@ export class UserController {
    * @param {Function} next - Express next middleware function.
    */
   async activities (req, res, next) {
-    const viewData = await this.#service.activities(req, res, next)
+    try {
+      const viewData = await this.#service.activities(req, res, next)
 
-    res.render('user/activities', { viewData })
+      res.render('user/activities', { viewData })
+    } catch (err) {
+      err.status = 500
+      next(createHttpError(500))
+    }
   }
 }

@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'
+import { fetchPostWithoutToken } from '../util/fetchHandler.js'
 
 /**
  *
@@ -21,7 +21,7 @@ export class AuthService {
     }
 
     const URL = 'https://gitlab.lnu.se/oauth/revoke'
-    const response = await this.#fetchPost(URL, body)
+    const response = await fetchPostWithoutToken(URL, body)
 
     if (response.status === 200) {
       loggedOut = true
@@ -30,21 +30,30 @@ export class AuthService {
     return loggedOut
   }
 
-  /**
-   * Fetch data post.
-   *
-   * @param {string} URL - the url to fetch.
-   * @param {object} body - the body to include when fetching.
-   */
-  async #fetchPost (URL, body) {
-    const response = await fetch(URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    })
+  async handleCallback (req) {
+    const body = {
+      client_id: process.env.APP_ID,
+      client_secret: process.env.APP_SECRET,
+      code: req.query.code,
+      redirect_uri: process.env.REDIRECT_URI,
+      grant_type: 'authorization_code'
+    }
+
+    const response = await fetchPostWithoutToken('https://gitlab.lnu.se/oauth/token', body)
 
     return response
+  }
+
+  async responseToJson (response) {
+    return await response.json()
+  }
+
+  setSession (req, responseJson) {
+    req.session.jwtToken = responseJson.id_token
+    req.session.accessToken = responseJson.access_token
+    req.session.loggedin = true
+    req.session.tokenExpires = responseJson.expires_in
+    req.session.tokenCreatedAt = responseJson.created_at
+    req.session.refreshToken = responseJson.refresh_token
   }
 }

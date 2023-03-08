@@ -5,16 +5,15 @@
  * @version 1.0.0
  */
 
-import fetch from 'node-fetch'
 import { AuthService } from '../services/AuthService.js'
 import { nanoid } from 'nanoid'
-import jwt from 'jsonwebtoken'
+import createError from 'http-errors'
 
 /**
  * Encapsulates a controller.
  */
 export class AuthController {
-  #service
+  #authService
 
   /**
    * Constructor for AuthController.
@@ -22,7 +21,7 @@ export class AuthController {
    * @param {object} service - AuthService.
    */
   constructor (service = new AuthService()) {
-    this.#service = service
+    this.#authService = service
   }
 
   /**
@@ -47,15 +46,20 @@ export class AuthController {
    * @param {Function} next - Express next middleware function.
    */
   async logout (req, res, next) {
-    console.log(req.session?.accessToken)
-    const loggedOut = this.#service.logout(req, res, next)
+    try {
+      const loggedOut = this.#authService.logout(req, res, next)
 
-    if (loggedOut) {
-      res.locals.loggedin = undefined
-      req.session.destroy()
+      if (loggedOut) {
+        res.locals.loggedin = undefined
+        req.session.destroy()
+        res.redirect('../../')
+      } else {
+        throw new Error('Server Error')
+      }
+    } catch (err) {
+      err.status = 500
+      next(createError(500))
     }
-
-    res.redirect('../../')
   }
 
   /**
@@ -66,35 +70,20 @@ export class AuthController {
    * @param {Function} next - Express next middleware function.
    */
   async handleCallback (req, res, next) {
-    const body = {
-      client_id: process.env.APP_ID,
-      client_secret: process.env.APP_SECRET,
-      code: req.query.code,
-      redirect_uri: process.env.REDIRECT_URI,
-      grant_type: 'authorization_code'
+    try {
+      const response = await this.#authService.handleCallback(req)
+
+      if (response.status === 200) {
+        const responseJson = await this.#authService.responseToJson(response)
+        this.#authService.setSession(req, responseJson)
+
+        res.redirect('../user/profile')
+      } else {
+        throw new Error('Not Found!')
+      }
+    } catch (err) {
+      err.status = 404
+      next(createError(404))
     }
-    const response = await fetch('https://gitlab.lnu.se/oauth/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    })
-    const responseJson = await response.json()
-
-    console.log(responseJson)
-
-    const payload = jwt.decode(responseJson.id_token, process.env.APP_SECRET)
-
-    console.log('payload:')
-    console.log(payload)
-
-    req.session.jwtToken = responseJson.id_token
-    req.session.accessToken = responseJson.access_token
-    req.session.loggedin = true
-    req.session.tokenExpires = responseJson.expires_in
-    req.session.tokenCreatedAt = responseJson.created_at
-    req.session.refreshToken = responseJson.refresh_token
-    res.redirect('../user/profile')
   }
 }

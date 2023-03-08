@@ -12,17 +12,17 @@ import { fetchPost } from '../../../util/fetchHandler.js'
 export const router = express.Router()
 
 /**
- * Autenticate JWT.
+ * Autenticate AccessToken.
  *
  * @param {object} req - Express request object.
  * @param {object} res - Express response object.
  * @param {Function} next - Express next middleware function.
  */
-const authenticateJwt = async (req, res, next) => {
+const authenticateAccessToken = async (req, res, next) => {
   try {
     const timeCreatedTokenAddedWithTokenExpired = req.session.tokenExpires + req.session.tokenCreatedAt
     const timeRightNowInSeconds = Date.now() / 1000
-    if (timeRightNowInSeconds > timeCreatedTokenAddedWithTokenExpired) { // byt till: >
+    if (timeRightNowInSeconds > timeCreatedTokenAddedWithTokenExpired) {
       const body = {
         client_id: process.env.APP_ID,
         client_secret: process.env.APP_SECRET,
@@ -84,8 +84,7 @@ const resolveUserController = (req) => req.app.get('container').resolve('UserCon
 
 router.get('/test', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 router.all('*', checkIfAccessTokenExist)
-router.all('*', authenticateJwt)
-// router.all('*', authenticateJwt)
+router.all('*', authenticateAccessToken)
 
 router.get('/profile', (req, res, next) => resolveUserController(req).profile(req, res, next))
 router.get('/activities', (req, res, next) => resolveUserController(req).activities(req, res, next))

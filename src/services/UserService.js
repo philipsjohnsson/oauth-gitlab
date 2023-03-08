@@ -1,20 +1,9 @@
-import fetch from 'node-fetch'
-import { JwtHandler } from '../util/JwtHandler.js'
-import { GraphQLClient } from 'graphql-request'
+import { fetchGet, graphQlPost } from '../util/fetchHandler.js'
 
 /**
  *
  */
 export class UserService {
-  #jwtHandler
-
-  /**
-   * Constructor for the UserService.
-   */
-  constructor () {
-    this.#jwtHandler = new JwtHandler()
-  }
-
   /**
    * Fetches the data for the profile.
    *
@@ -23,10 +12,7 @@ export class UserService {
    * @param {Function} next - Express next middleware function.
    */
   async profile (req, res, next) {
-    const payloadJwt = this.#jwtHandler.decodeJwt(req, res, next)
-    console.log(payloadJwt)
-
-    return this.#fetchGet('https://gitlab.lnu.se/api/v4/user', req)
+    return fetchGet('https://gitlab.lnu.se/api/v4/user', req)
   }
 
   /**
@@ -40,7 +26,7 @@ export class UserService {
     const arrPages = []
 
     for (let i = 1; i <= 2; i++) {
-      arrPages.push(...await this.#fetchGet(`https://gitlab.lnu.se/api/v4/events?per_page=51&page=${i}`, req))
+      arrPages.push(...await fetchGet(`https://gitlab.lnu.se/api/v4/events?per_page=51&page=${i}`, req))
     }
 
     arrPages.forEach((element) => {
@@ -58,35 +44,6 @@ export class UserService {
    * @param {Function} next - Express next middleware function.
    */
   async groupProjects (req, res, next) {
-    return await this.#graphQL('https://gitlab.lnu.se/api/graphql', req)
-  }
-
-  /**
-   * Fetches data using get method.
-   *
-   * @param {string} URL - url to fetch.
-   * @param {object} req - Express request object.
-   */
-  async #fetchGet (URL, req) {
-    const response = await fetch(URL, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + req.session.accessToken
-      }
-    })
-    const responseJson = await response.json()
-
-    return responseJson
-  }
-
-  /**
-   * Fetches the data using graphQL.
-   *
-   * @param {string} URL - url to fetch.
-   * @param {object} req - Express request object.
-   */
-  async #graphQL (URL, req) {
     const query = `query {
       currentUser {
         groups(first: 4) {
@@ -131,12 +88,6 @@ export class UserService {
         }
       }`
 
-    const client = new GraphQLClient(URL, {
-      headers: {
-        Authorization: `Bearer ${req.session.accessToken}`
-      }
-    })
-
-    return await client.request(query)
+    return await graphQlPost('https://gitlab.lnu.se/api/graphql', req, query)
   }
 }
