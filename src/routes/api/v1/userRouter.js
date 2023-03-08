@@ -1,5 +1,5 @@
 /**
- * API version 1 routes.
+ * User routes.
  *
  * @author Philip Jonsson
  * @version 1.0.0
@@ -82,7 +82,6 @@ const checkIfAccessTokenExist = (req, res, next) => {
  */
 const resolveUserController = (req) => req.app.get('container').resolve('UserController') // req.app --> instance of the express application
 
-router.get('/test', (req, res) => res.json({ message: 'Hooray! Welcome to version 1 of this very simple RESTful API!' }))
 router.all('*', checkIfAccessTokenExist)
 router.all('*', authenticateAccessToken)
 

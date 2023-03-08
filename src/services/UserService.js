@@ -1,3 +1,10 @@
+/**
+ * UserService for the application.
+ *
+ * @author Philip Jonsson
+ * @version 1.0.0
+ */
+
 import { fetchGet, graphQlPost } from '../util/fetchHandler.js'
 
 /**

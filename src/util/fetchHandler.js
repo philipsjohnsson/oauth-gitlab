@@ -2,7 +2,11 @@ import fetch from 'node-fetch'
 import { GraphQLClient } from 'graphql-request'
 
 /**
+ * Post fetch.
  *
+ * @param {string} URL - the url to fetch.
+ * @param {object} req - Express request object.
+ * @param {object} body - The body in the fetch.
  */
 export const fetchPost = async (URL, req, body) => {
   const response = await fetch(URL, {

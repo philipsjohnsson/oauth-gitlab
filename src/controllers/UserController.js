@@ -1,4 +1,11 @@
-import createHttpError from 'http-errors'
+/**
+ * Module for the UserController.
+ *
+ * @author Philip Jonsson
+ * @version 1.0.0
+ */
+
+import createError from 'http-errors'
 import { UserService } from '../services/UserService.js'
 
 /**
@@ -30,7 +37,7 @@ export class UserController {
       res.render('user/profile', { viewData })
     } catch (err) {
       err.status = 500
-      next(createHttpError(500))
+      next(createError(500))
     }
   }
 
@@ -48,7 +55,7 @@ export class UserController {
       res.render('user/group-projects', { viewData })
     } catch (err) {
       err.status = 500
-      next(createHttpError(500))
+      next(createError(500))
     }
   }
 
@@ -66,7 +73,7 @@ export class UserController {
       res.render('user/activities', { viewData })
     } catch (err) {
       err.status = 500
-      next(createHttpError(500))
+      next(createError(500))
     }
   }
 }

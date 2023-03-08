@@ -1,5 +1,5 @@
 /**
- * Module for the TasksController.
+ * Module for the HomeController.
  *
  * @author Philip Jonsson
  * @version 1.0.0

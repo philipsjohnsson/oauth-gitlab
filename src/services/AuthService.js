@@ -1,3 +1,10 @@
+/**
+ * AuthService for the application.
+ *
+ * @author Philip Jonsson
+ * @version 1.0.0
+ */
+
 import { fetchPostWithoutToken } from '../util/fetchHandler.js'
 
 /**
@@ -30,6 +37,11 @@ export class AuthService {
     return loggedOut
   }
 
+  /**
+   * Handles the callback.
+   *
+   * @param {object} req - Express request object.
+   */
   async handleCallback (req) {
     const body = {
       client_id: process.env.APP_ID,
@@ -44,10 +56,21 @@ export class AuthService {
     return response
   }
 
+  /**
+   * Makes it to json.
+   *
+   * @param {object} response - return json.
+   */
   async responseToJson (response) {
     return await response.json()
   }
 
+  /**
+   * Sets the session.
+   *
+   * @param {object} req - request, to reach the session.
+   * @param {object} responseJson - response in json format that sets the session.
+   */
   setSession (req, responseJson) {
     req.session.jwtToken = responseJson.id_token
     req.session.accessToken = responseJson.access_token

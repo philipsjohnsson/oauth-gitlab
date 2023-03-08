@@ -1,5 +1,5 @@
 /**
- * API version 1 routes.
+ * Auth routes.
  *
  * @author Philip Jonsson
  * @version 1.0.0
